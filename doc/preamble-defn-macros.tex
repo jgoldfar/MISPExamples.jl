@@ -1,0 +1,61 @@
+%!TEX root = main.tex
+%%
+% General Macros
+%%
+\let\l\ell%
+%%
+
+%%
+% "Continuous" variable macros
+%%
+\def\gControlSpace{W_2^1}
+\def\pControlSpace{W_2^1}
+\def\fControlSpace{L_{\infty}}
+
+\def\controlVars{g, p, f}
+
+\def\controlSpace{V_R}
+\def\controlSet{H}
+
+\def\controlSetFull{%
+  \gControlSpace{}(0,T) \times%chktex 36 ok (math-mode only)
+  \pControlSpace{}(0,T) \times%chktex 36 ok (math-mode only)
+  \fControlSpace{}(D)%chktex 36 ok (math-mode only)
+}
+\def\controlSetNorm{%
+\max\left(%
+  \Norm{g}_{\gControlSpace(0,T)},%
+  \Norm{p}_{\pControlSpace(0,T)},%
+  \Norm{f}_{\fControlSpace(D)}%
+  \right)%
+}
+
+\def\fJ{\n{J}}
+\def\bClass{\n{B}}
+\def\probI{\m{I}}
+\def\stateVectorSpace{W_{2}^{1,1}(D) \cap{} L_{\infty}(D)}%chktex 36 ok (math-mode only)
+%%
+
+%%
+% "Discrete" variable macros
+%%
+\def\discreteControlVars{[g]_n, [p]_n, [f]_{n}}
+\def\discreteControlVarsWithDelta{[{\Delta{} g}]_n, [{\Delta{} p}]_n, [{\Delta{} f}]_{n}}
+\def\discreteControlSpace{\bar{V}_R}
+\def\discreteControlSet{\bar{H}}
+\def\discreteControlSetFull{%
+  \l_2^n \times%
+  \l_2^n \times%
+  \l_2^{n \times{} m}%
+}
+\newcommand{\fI}[1]{\n{I}_{#1}}
+\def\fIn{\fI{n}}
+\def\probIn{\m{I}_n}
+
+% "Temp" macros for use in derivation of gradient
+
+% Control variables
+\def\cDBar{[\bar{c}]_n}
+\def\cD{[c]_n}
+\def\cDDelta{[\Delta c]_n}%chktex 1 ok (this is math-mode only)
+%%

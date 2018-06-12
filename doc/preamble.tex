@@ -1,0 +1,27 @@
+%!TEX root = main.tex
+\documentclass[letterpaper, draft, 10pt]{amsart}
+% \documentclass[letterpaper, final, 10pt]{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx, baskervald}
+\usepackage{amsthm, enumerate}
+
+\let\institute\address%
+\def\diffpartdir{.}
+\let\texpartdir\diffpartdir%
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{claim}{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+
+\usepackage{geometry}
+\usepackage[backgroundcolor=white, linecolor=black, textsize=footnotesize, obeyDraft]{todonotes}
+% \linespread{2}
+
+\input{\texpartdir/preamble-cmds}%chktex 27 ok (external)
+\input{\texpartdir/preamble-defn-macros}%chktex 27 ok (external)

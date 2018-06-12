@@ -1,0 +1,66 @@
+assume(t>0);
+
+/* u=u1 for x<xi(t) */
+u1: c1 + B1*erf(x/sqrt(4 * k1 * t));
+u1x: diff(u1, x);
+u1xx: diff(u1x, x);
+u1t: diff(u1, t);
+f1: u1t - k1 * u1xx;
+
+/* u=u2 for x>xi(t) */
+u2: A2 + B2*erf(x/sqrt(4 * k2 * t));
+u2x: diff(u2, x);
+u2xx: diff(u2x, x);
+u2t: diff(u2, t);
+f2: u2t - k2 * u2xx;
+
+/* Choose final moment T=1 */
+T: 1;
+
+/* boundary is x=xi(t) */
+xi: alpha * sqrt(t);
+
+/* Position of free boundary at the final moment */
+xiT: subst(t=T, xi);
+
+/* Choose boundary value to be strictly larger than free boundary position */
+lBdy: 2*xiT;
+
+/* Symbolic constants appearing in the equations above */
+B1: -c1 / erf(alpha / sqrt(4*k1));
+
+B2: c2 / (1-erf(alpha / sqrt(4*k2)));
+
+A2: -erf(alpha / sqrt(4*k2))*B2;
+
+/* Problem data: diffusion coefficient */
+k(u) := (k1 * charfun(u<0)) + (k2 * charfun(u>=0));
+
+/* Problem data: heat flux on x=0 */
+g: subst(x=0, u1x);
+
+/* Problem data: heat flux on x=l */
+p: subst(x=lBdy, u2x);
+
+/* Measurement: temperature on x=l */
+nu: subst(x=lBdy, u2);
+
+/* Initial moment (we do not choose t0=0 since the data is unbounded.) */
+t0: 1e-2;
+
+xiT0: subst(t=t0, xi);
+
+/* Problem data: initial temperature */
+phi: (subst(t=t0, u1)*charfun(x<xiT0)) + (subst(t=t0, u2) * charfun(x>xiT0));
+
+/* Problem data: phase transition temperature */
+u0: 0;
+
+/* Kirchoff transformation */
+F(v):= integrate(k(u), u, u0, v);
+
+/* Transformed boundary measurement */
+Gamma: F(nu);
+
+/* Transformed initial data */
+Phi: F(phi);

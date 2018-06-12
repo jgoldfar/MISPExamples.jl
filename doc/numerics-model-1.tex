@@ -1,0 +1,285 @@
+% !TEX root = main.tex
+Here we develop a model problem to test implementations of the developed numerical method.
+One such problem can be found in the text by Tikhonov \& Samarskii~\cite[Ch.\ II, App.\ IV, pp.\ 283--288]{tikhonov63}.
+The model problem originates in the following: find \(\big(u, \xi{}\big)\) satisfying
+\begin{gather}
+  \D{u_1}{t} - k_1 \D{^2 u_1}{x^2} = 0,~0<x<\xi(t),~t>0\label{eq:tikhonov-samarskii-pde-1}
+  \\
+  \D{u_2}{t} - k_2 \D{^2 u_2}{x^2} = 0,~\xi(t)<x<\infty,~t>0\label{eq:tikhonov-samarskii-pde-2}
+  \\
+  u_1(0,t) = c_1,~t>0
+  \\
+  u_2(x,0) = c_2,~x>\xi(0)
+  \\
+  u_1(x,0) = c_1,~x<\xi(0) % Note: this condition is added since $\xi$ is
+  % unknown a-priori.
+  \\
+  u_1(\xi(t),t) = u_2(\xi(t),t)=0,~t>0
+  \\
+  k_1 \D{u_1}{x}(\xi(t),t) - k_2 \D{u_2}{x}(\xi(t),t) = \gamma \dD{\xi}{t}(t)\label{eq:tikhonov-samarskii-stefancond}
+\end{gather}
+where \(k_1, k_2, \gamma >0\) are given, and without loss of generality \(c_1<0\), \(c_2\geq 0\).
+Direct calculation verifies that the exact solution to~\eqref{eq:tikhonov-samarskii-pde-1}--\eqref{eq:tikhonov-samarskii-stefancond} is
+\begin{gather}
+  u_1(x,t)=c_1 + B_1 \mathrm{erf}\left( \frac{x}{\sqrt{4 k_1 t}}\right)
+  \\
+  u_2(x,t)=A_2 + B_2 \mathrm{erf}\left( \frac{x}{\sqrt{4 k_2 t}}\right)
+  \\
+  \xi(t) = \alpha \sqrt{t}
+  \intertext{where}
+  \mathrm{erf}(x)=\frac{2}{\sqrt{\pi}} \int_0^x e^{-z^2} \,dz,
+  \\
+  B_1 =-\frac{c_1}{\mathrm{erf}\left(\alpha/\sqrt{4 k_1}\right)},\quad
+  B_2 = \frac{c_2}{1-\mathrm{erf}\left(\alpha/\sqrt{4 k_2}\right)}
+  \\
+  A_2 =-\mathrm{erf}\left(\alpha/\sqrt{4 k_2}\right) B_2
+  \intertext{and \(\alpha{}\) is a solution of the transcendental equation}
+  % %% Directly translated
+  %\frac{k_1 c_1 e^{-\frac{\alpha^2}{4 k_1}}}{\sqrt{k_1} \Phi\left(\alpha/\sqrt{4 k_1}\right)}
+  %+ \frac{k_2 c_2 e^{-\frac{\alpha^2}{4 k_2}}}{\sqrt{k_2}\left[1-\Phi\left(\alpha/\sqrt{4 k_2}\right) \right]}
+  %= -\frac{\gamma \sqrt{\pi}}{2} \alpha
+  % %% But some cancellation happens since we chose particular values for
+  % a_1/a_2 from reference.
+  \frac{\sqrt{k_1} c_1 e^{-\frac{\alpha^2}{4 k_1}}}{ \mathrm{erf}\left(\alpha/\sqrt{4 k_1}\right)}
+  + \frac{\sqrt{k_2} c_2 e^{-\frac{\alpha^2}{4 k_2}}}{\left[1-\mathrm{erf}\left(\alpha/\sqrt{4 k_2}\right) \right]}
+  = -\frac{\gamma \sqrt{\pi}}{2} \alpha
+\end{gather}
+The equation above has a unique solution \(\alpha>0\).
+To transform this problem to the form found in~\cite{abdulla16a}, the functions
+\(\alpha(u)\), \(k(u)\), etc.\ should be found, along with the phase transition
+temperatures \(u^j\) and other problem data.
+Choose the time domain \(0<t<T=: 1\), so the maximal extent of the first phase is \(\xi(T) = \alpha\); we choose \(\l = 2\alpha{}\).
+The problem above is a two phase problem with phase transition temperature \(u^1
+= 0\), and evidently, we may choose \(\alpha(u)\equiv 1\).
+Since \(u=u_1(x,t)\) for \(u<u^1=0\) solves~\eqref{eq:tikhonov-samarskii-pde-1}
+and \(u=u_2(x,t)\) for \(u>u^1=0\) solves~\eqref{eq:tikhonov-samarskii-pde-2},
+we choose
+\[
+  k(u) =
+  \begin{cases}
+    k_1,~&u<0
+    \\
+    k_2,~&u>0
+  \end{cases}
+\]
+%
+Evidently,
+\[
+  \phi(x) =
+  \begin{cases}
+    c_1,~&x<\xi(0)
+    \\
+    c_2,~&x>\xi(0)
+  \end{cases}
+\]
+%
+By direct calculation,
+\[
+  k_1 \D{u_1}{x} \Big\vert_{x=0}
+  = g(t) \equiv
+  \input{\texpartdir/verif/TSE-g}%chktex 27 ok (external)
+\]
+Similarly,
+\[
+  k_2 \D{u_2}{x} \Big \vert_{x=\l}
+  = p(t) \equiv
+  \input{\texpartdir/verif/TSE-p}%chktex 27 ok (external)
+\]
+Note that while \(p(t)\) is bounded, \(g(t)\) is not.
+%
+We have
+\[
+  u_2(\l, t)
+  = \nu(t)
+  \equiv \input{\texpartdir/verif/TSE-nu}%chktex 27 ok (external)
+\]
+Note that \(\nu(t)\geq 0\).
+
+We now define the mapping \(F(u)\) as in~\cite{abdulla16a}:
+\begin{equation}
+  F(u)
+  = \int_{u_1}^u k(y) \,dy
+  = \int_0^u k(y) \,dy
+  = \begin{cases}
+    k_1 u,~&u<0
+    \\
+    k_2 u,~&u>0
+    \end{cases}
+\end{equation}
+The inverse mapping is
+\begin{equation}
+  F^{-1}(u) =
+  \begin{cases}
+    \frac{u}{k_1},~&u<0
+    \\
+    \frac{u}{k_2},~&u>0
+  \end{cases}
+\end{equation}
+In particular we have
+\[
+  \Gamma(t)
+  = \int_0^{\nu(t)} k(u) \,du
+  = \begin{cases}
+    k_1 \nu(t),~&\nu(t)<0
+    \\
+    k_2 \nu(t),~&\nu(t)>0
+  \end{cases}
+  = k_2 \nu(t)
+\]
+since \(\nu \geq 0\).
+and
+\[
+  \Phi(x) =
+  \begin{cases}
+    k_1 c_1,~&x<\xi(0)
+    \\
+    k_2 c_2,~&x>\xi(0)
+  \end{cases}
+\]
+Having \(F\), \(\alpha{}\), and \(k\), we can define
+\begin{gather}
+  \beta(v)
+  = \frac{\alpha(F^{-1}(v))}{k(F^{-1}(v))}
+  = \frac{1}{k(F^{-1}(v))}\nonumber
+  %\\
+  = \begin{cases}
+    \frac{1}{k(v/k_1)},~&v<0
+    \\
+    \frac{1}{k(v/k_2)},~&v>0
+  \end{cases}\nonumber
+  %\\
+  =\begin{cases}
+    \frac{1}{k_1},~&v<0
+    \\
+    \frac{1}{k_2},~&v>0
+  \end{cases}
+\end{gather}
+since \(k_1, k_2 > 0\).
+Now we introduce a function \(b(v)\) such that \(b'(v) = \beta(v)\);
+we additionally require that \([b(v)]_{v=v^1} = [b(v)]_{v=0} = \gamma{}\), and so
+\begin{equation}
+  b(v) =
+  \begin{cases}
+    \gamma + \frac{v}{k_2},~&v>0
+    \\
+    \frac{v}{k_1},~&v<0
+  \end{cases}
+\end{equation}
+% For any \(\epsilon>0\) define
+% \begin{equation}
+%   b_{\epsilon}(v) = \int_{-\epsilon}^{\epsilon} f(v-z) \eta_{\epsilon}(z) \,dz
+% \end{equation}
+% where \(\eta_{\epsilon}\) is a mollifier supported in \((-\epsilon,\epsilon)\).
+%
+To avoid issues with the lack of boundedness of the given data, the right approach is to shift the problem in time.
+The requirement that the initial data be constant is not essential.
+
+To summarize, the model problem of Tikhonov \& Samarskii~\cite[Ch.\ II, App.\
+IV, pp.\ 283--288]{tikhonov63} is translated to the framework of Abdulla \&
+Poggi~\cite{abdulla16a} as follows: fix any \(t_0, k_1, k_2>0\), \(c_1<0\),
+\(c_2 \geq 0\).
+Find the corresponding \(\alpha>0\) as defined above, and set \(\xi_0 = \alpha
+\sqrt{t_0}\) and \(\l=2\alpha\).
+Find \(v\), \(\xi{}\), and one of \(p\), \(g\), or \(f\) satisfying
+\begin{gather}
+  \D{b(v)}{t} - v_{xx}
+  = f~\text{in}~
+  D=\bk{(x,t):~0<x<\l:=2\alpha,~t_0 < t < T:=1}\label{eq:tikhonov-samarskii-pde}
+  \\
+  v(x,0)
+  = \Phi(x)
+  :=\begin{cases}
+    k_1 u_1(x,t_0),~x < \xi_0
+    \\
+    k_2 u_2(x,t_0),~x > \xi_0
+  \end{cases}
+  \\
+  v_x(0,t) = g(t),\quad
+  v_x(\l, t) = p(t),\quad 0<t<T\label{eq:tikhonov-samarskii-neumann-conditions}
+  \\
+  v(\l, t) = \Gamma(t) := k_2 \nu(t) = k_2 \left(
+    \input{\texpartdir/verif/TSE-nu}%chktex 27 ok (external)
+  \right)\label{eq:tikhonov-samarskii-extra-measurement}
+\end{gather}
+
+The variational formulation of the
+problem~\eqref{eq:tikhonov-samarskii-pde}--\eqref{eq:tikhonov-samarskii-extra-measurement}
+is as follows: consider the minimization of the functional
+\[
+  \fJ{}(c) = \int_0^T \norm{v(\l, t; c) - \Gamma(t)}^2 \,dt
+\]
+where \(c\) belongs to the control set
+\[
+  V_R = \bk{c=(\controlVars{}) \in H,~\Norm{c}_{H} \leq R}
+\]
+and the state vector \(v=v(x,t;c)\) is a weak solution
+of the Neumann problem~\eqref{eq:tikhonov-samarskii-pde}--\eqref{eq:tikhonov-samarskii-neumann-conditions};
+that is, \(v\in\stateVectorSpace{}\) satisfies
+\begin{gather*}
+  \iint_D\Big[
+  -b(x,t,v(x,t))\psi_t
+  +v_x\psi_x
+  -f\psi
+  \Big]\,dx\,dt
+  - \int_0^{\ell}b(x,0,\Phi(x))\psi(x,0)\,dx \nonumber
+  \\
+  - \int_0^T p(t)\psi(\ell,t)\,dt
+  +\int_0^T g(t)\psi(0,t)\,dt
+  = 0,
+  \qquad \forall \psi\in W_2^{1,1}(D),
+  \quad \psi(x,T)=0.
+\end{gather*}
+Now that all of the ``analytic'' calculations are completed, we move to the
+development of the numerical method.
+Let \(m\), \(n\), \(T\), \(\l{}\) be given, and define the space and time grids
+\(\omega_\tau{}\), \(\omega_h\) as in~\cite{abdulla16a}.
+In particular, define \(\tau = T/n\), \(h=\l/m\), \(t_k = k \tau{} + t_0\), and \(x_i
+= i h\).
+Given this grid, define
+\begin{gather*}
+  \Gamma_k
+  = \frac{1}{\tau} \int_{t_{k-1}}^{t_k} \Gamma(t) \,dt
+  = \frac{1}{\tau} \int_{t_{k-1}}^{t_k} k_2 \nu(t) \,dt
+  \\
+  = k_2 A_2 + \frac{k_2 B_2}{\tau} \int_{t_{k-1}}^{t_k} \mathrm{erf}\left(
+    \frac{1}{\sqrt{4 k_2 t}}
+  \right) \,dt
+\end{gather*}
+and
+\begin{gather*}
+  \Phi_i
+  = \frac{1}{h} \int_{x_i}^{x_{i+1}} \Phi(x) \,dx
+\end{gather*}
+One might choose to take \(g_k\), \(p_k\), or \(f_{i}(k)\) as the corresponding
+Steklov average of the analytic values, but in general the numerical method is
+to consider the minimization of the functional
+\begin{gather*}
+  I_n([c]_n) = \sum_{k=1}^n \tau \left( v_m(k) - \Gamma_k \right)^2
+  \intertext{where the control \([c]_n\) belongs to the control set}
+  \discreteControlSpace{} = \Big{\{}
+  [c]_n = \big( \discreteControlVars{}\big),~
+  \Norm{[c]_n}_{\discreteControlSet{}} \leq R
+  \Big{\}}
+  \intertext{and the state vector satisfies \(v_i(0) = \Phi_i\) and}
+  \sum_{k=1}^n \tau \sum_{i=0}^{m-1} h\left[
+    \big(b_n(v_i(k))\big)_{\bar{t}}\eta_i(k)
+    + v_{ix}(k)\eta_{ix}(k)
+    - f_i(k) \eta_i(k)
+  \right]
+  - p_k \eta_m(k)
+  + g_k \eta_0(k)
+  = 0
+\end{gather*}
+for all \(\bk{\eta_i(k)} \subset \R^{nm}\).
+
+Tikhonov \& Samarskii remark that if \(c_{2}\) is equal to the temperature of fusion (\(c_{2}=0\)) then the coefficients take the simpler form
+\begin{gather*}
+A_{2} = B_{2} = 0,\quad
+% \\
+A_{1} = c_{1},\quad
+% \\
+B_{1} = -\frac{1}{\mathrm{erf}\left( \frac{\alpha}{\sqrt{4 k_{2}}}\right)}
+\intertext{and \(\alpha{}\) is a solution of the transcendental equation}
+\frac{\sqrt{k_1} c_1 e^{-\frac{\alpha^2}{4 k_1}}}{ \mathrm{erf}\left(\alpha/\sqrt{4 k_1}\right)}
+  = -\frac{\gamma \sqrt{\pi}}{2} \alpha
+\end{gather*}

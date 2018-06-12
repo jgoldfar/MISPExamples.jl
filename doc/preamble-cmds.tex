@@ -1,0 +1,24 @@
+%!TEX root = main.tex
+\newcommand\field[1]{\mathbb{#1}}
+\newcommand\R{\field{R}}
+\newcommand\ZZ{\field{Z}}
+\newcommand\bk[1]{\left\{ #1 \right\}} % chktex 21 ok (left/right brace)
+\newcommand\ip[2]{\left\langle{} #1, #2 \right\rangle}
+\newcommand\D[2]{\frac{\partial{} #1}{\partial{} #2}}
+\newcommand\dD[2]{\frac{d #1}{d #2}}
+\newcommand{\nc}{\newcommand}
+\nc{\ep}{\varepsilon}
+\nc{\n}[1]{\mathcal{#1}}
+\nc{\m}[1]{\mathcal{#1}}
+\newcommand{\Norm}[1]{\Vert{}#1\Vert}
+\newcommand{\norm}[1]{\vert{}#1\vert}
+
+% for indicator function
+\newcommand{\Ind}{\mathbf{1}}
+\DeclareMathOperator*{\esssup}{ess~sup}
+% \DeclareMathOperator{\sign}{sign}
+%
+% \makeatletter
+% \def\ifdraft{\ifdim\overfullrule>\z@
+%   \expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi} % chktex 41 ok % chktex 21 ok (needed to define ifdraft flag)
+% \makeatother

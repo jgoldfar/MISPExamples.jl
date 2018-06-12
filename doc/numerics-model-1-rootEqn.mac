@@ -1,0 +1,36 @@
+/*
+numerics-model-1-rootEqn.mac: Calculations related to solvability of rootEqn(x) = 0 over a range of parameters.
+*/
+
+/* Check that built-in erf matches "our" erf */
+diff(erf(x), x) = 2*exp(-x^2)/sqrt(%pi);
+
+/* All parameters other than alpha are constant. */
+declare(gammaConst, constant);
+declare(gammaConst, real);
+declare(k1, constant);
+declare(k1, real);
+declare(c1, constant);
+declare(k2, constant);
+declare(k2, real);
+declare(c2, constant);
+
+/* All parameters have fixed sign as well. */
+assume(
+  gammaConst>0,
+  k1>0, c1<0,
+  0<k2, c2>0
+  );
+
+A1: sqrt(k1)*c1*exp(-alpha^2/(4*k1))/erf(alpha/sqrt(4*k1));
+A2: sqrt(k2)*c2*exp(-alpha^2/(4*k2))/(1-erf(alpha/sqrt(4*k2)));
+A3: gammaConst*sqrt(%pi)/2*alpha;
+
+rootEqn: A1 + A2 + A3;
+
+limit(rootEqn, alpha, 0, plus);
+limit(rootEqn, alpha, inf);
+
+/*
+rootEqnDiff: diff(rootEqn, alpha);
+*/
