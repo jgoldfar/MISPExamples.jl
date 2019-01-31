@@ -1,5 +1,8 @@
 # README
 
+[Bitbucket Pipeline Status](https://img.shields.io/bitbucket/pipelines/jgoldfar/mispexamples.jl.svg?style=flat)
+[![Travis Build Status](https://travis-ci.org/jgoldfar/MISPExamples.jl.svg?branch=master)](https://travis-ci.org/jgoldfar/MISPExamples.jl)
+
 `MISPExamples` defines a "general" version of the self-similar solution to the Stefan problem from Tikhonov & Samarskii (with all parameters free to choose) as well as a "default" version with pre-set parameters.
 
 The README is generated automatically from the notebook [doc/TikhonovSamarskiiPlots.ipynb](/doc/TikhonovSamarskiiPlots.ipynb), so the commands below will work without modification from `/doc/`
