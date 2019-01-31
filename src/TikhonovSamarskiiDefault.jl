@@ -26,14 +26,14 @@ end
 
 const t1 = initProblem()
 
+# tShift is the initial moment we chose for this simulation.
+const tShift = 1e-1
+
 # Length of time domain
 const finalMoment = TikhonovSamarskii.finalMoment
 
 # Length of space domain
-const spaceLength = TikhonovSamarskii.lBdy(t1)
-
-# tShift is the initial moment we chose for this simulation.
-const tShift = 1e-1
+const spaceLength = TikhonovSamarskii.lBdy(tShift, t1)
 
 # Analytic solution v(x,t)
 v(x,t) = TikhonovSamarskii.v(x, t + tShift, t1)
@@ -48,6 +48,8 @@ f(x,t) = TikhonovSamarskii.f(x,t) # Heat sources
 const gAverageValue = TikhonovSamarskii.gAverageValue(t1)
 nu(t) = TikhonovSamarskii.nu(t + tShift, t1)
 
+xi(t) = TikhonovSamarskii.xi(t + tShift, t1)
+
 tGrid(NT) = TikhonovSamarskii.tGrid(NT)
-xGrid(NX) = TikhonovSamarskii.xGrid(NX, t1)
+xGrid(NX) = TikhonovSamarskii.xGrid(NX, tShift, t1)
 end

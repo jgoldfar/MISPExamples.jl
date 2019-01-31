@@ -120,7 +120,10 @@ xi(t, d::ProblemData) = hasAlpha(d) ? alpha(d) * sqrt(t) : NaN
 
 Left boundary point chosen as twice the magnitude of the "known" final position for problem with data `d` at time `finalMoment`.
 """
-lBdy(d::ProblemData) = 2*xi(finalMoment, d)
+function lBdy end
+
+lBdy(tShift::Real, d::ProblemData) = 2*xi(finalMoment + tShift, d)
+lBdy(d::ProblemData) = lBdy(0, d)
 
 ## Functions below all assume hasAlpha(data)
 u1(x, t, d::ProblemData) = d.c1 + B1(d)*erf(x/(2 * sqrt_fast(t * d.k1)))
@@ -245,13 +248,17 @@ v(x, t, d::ProblemData) = F(u(x, t, d), d)
 
 Create a time grid with `NT` grid points.
 """
-tGrid(NT) = range(0, stop=finalMoment, length=NT)
+tGrid(NT::Integer) = range(0, stop=finalMoment, length=NT)
 
 """
     xGrid(NX, d)
 
 Create a space grid on the domain `[0, 2 s(t_f)]` with `NX` grid points.
 """
-xGrid(NX, d::ProblemData) = range(0, stop=lBdy(d), length=NX)
+function xGrid end
+
+xGrid(NX::Integer, tShift, d::ProblemData) = range(0, stop=lBdy(tShift, d), length=NX)
+
+xGrid(NX::Integer, d::ProblemData) = xGrid(NX, 0, d)
 
 end
