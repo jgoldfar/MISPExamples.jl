@@ -1,0 +1,5 @@
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+MISPExamples = "c1e558f6-6b4a-11e8-0037-fbb02674179a"
+PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"

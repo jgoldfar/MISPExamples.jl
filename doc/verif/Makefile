@@ -5,7 +5,7 @@ StandardMaximaFix = sed -f fix-maxima-tex-out-1.sed | tr -d '\n'\
 	| sed -f fix-maxima-tex-otherspacing.sed \
 	| sed 's/ ,/,/g'
 
-maxima-TSE-%.tex: TikhonovSamarskiiModel.mac
+maxima-TSE-%.tex: TikhonovSamarskii.mac
 	$(MAXIMACMD) --batch-string 'batch("$<"); load("mactex-utilities"); with_stdout("$@", print(tex1($*)));'$
 
 TSE-%.tex: maxima-TSE-%.tex

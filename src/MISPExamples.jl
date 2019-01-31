@@ -1,7 +1,9 @@
 module MISPExamples
 
-export TikhonovSamarskiiExample
+export TikhonovSamarskii, TikhonovSamarskiiDefault
 
-include("TikhonovSamarskiiExample.jl")
+include("TikhonovSamarskii.jl")
+
+include("TikhonovSamarskiiDefault.jl")
 
 end # module

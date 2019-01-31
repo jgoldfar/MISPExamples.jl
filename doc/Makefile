@@ -2,9 +2,13 @@ SHELL=/bin/bash
 PWD:=$(shell pwd)
 
 LATEX=latexmk -bibtex -pdf
+JULIA?=$(shell which julia)
 
 TEX_SOURCES=$(wildcard *.tex)
 TEX_SOURCES_BASENAME=$(basename $(TEX_SOURCES))
+
+NOTEBOOKS=$(basename $(shell *.ipynb))
+
 ROOTCOMPILE=main
 
 CHKTEXARGS=-n3
@@ -127,7 +131,17 @@ spellcheck-all: $(addprefix spell/,$(patsubst %.tex,%.log,$(TEX_SOURCES)))
 clean-spell:
 	$(RM) spell/*.log
 
+#TODO: Add check-notebooks
 check: check-srcs check-logs
+
+check-notebook-%: %.ipynb
+	$(JULIA) -e 'using Pkg; Pkg.add("IJulia")'
+	jupyter nbconvert --to notebook --execute --output $*-check.ipynb $<
+
+check-notebooks: $(addprefix check-notebook-,$(NOTEBOOKS))
+
+generate-README: TikhonovSamarskiiPlots.ipynb
+	jupyter nbconvert --to markdown --execute --output README.md $<
 
 ## Generate inlined files using custom latexpand script
 %-flat.tex: %.tex latexpand $(filter-out %-flat.tex,$(SOURCES))
