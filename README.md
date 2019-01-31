@@ -1,7 +1,8 @@
 # README
 
-`MISPExamples` defines a "general" version of the Tikhonov & Samarskii example (with all parameters free to choose) as well as a "default" version with pre-set parameters.
-This file is generated automatically from the notebook [doc/TikhonovSamarskiiPlots.ipynb](/doc/TikhonovSamarskiiPlots.ipynb), so the commands below will work without modification from `/doc/`
+`MISPExamples` defines a "general" version of the self-similar solution to the Stefan problem from Tikhonov & Samarskii (with all parameters free to choose) as well as a "default" version with pre-set parameters.
+
+The README is generated automatically from the notebook [doc/TikhonovSamarskiiPlots.ipynb](/doc/TikhonovSamarskiiPlots.ipynb), so the commands below will work without modification from `/doc/`
 
 It has no significant external dependencies except [`SpecialFunctions.jl`](https://github.com/JuliaMath/SpecialFunctions.jl); the first time you run the package, you'll need to `instantiate` that dependency:
 
@@ -9,7 +10,7 @@ It has no significant external dependencies except [`SpecialFunctions.jl`](https
 using Pkg
 Pkg.activate(@__DIR__)
 
-# # If you've already run the comman below, all you need to do is execute
+# # If you've already run the command below, all you need to do is execute
 Pkg.instantiate()
 
 # # The first time you use this notebook, you'll have to run
