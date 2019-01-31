@@ -4,6 +4,10 @@ various parameters.
 """
 module TikhonovSamarskiiDefault
 using ..TikhonovSamarskii
+
+# Note: Minimal interface is exported below.
+export g, p, f, Gamma, bcoeff, Phi
+
 # The Tikhonov & Samarskii example is parameterized by the coefficients appearing in
 # the various equations.
 function initProblem(c1=-1.0, c2=1.0, k1=1.0, k2=1.0, gammaVal=1.0)

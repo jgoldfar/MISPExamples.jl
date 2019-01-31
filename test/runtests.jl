@@ -15,7 +15,7 @@ end
     end
 end
 
-const TSE=MISPExamples.TikhonovSamarskiiExample
+const TSE = MISPExamples.TikhonovSamarskii
 @testset "TikhonovSamarskii Example" begin
     # Simple test that _bisect works as expected.
     approxRoot, errorEstimate = @inferred TSE._bisect(x->x^2-2, 0.0, -2.0, 2.0, 2.0, 30)

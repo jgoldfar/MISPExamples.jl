@@ -5,6 +5,9 @@ end
 
 import Base.FastMath: sqrt_fast
 
+# Note: Minimal interface is exported below.
+export g, p, f, Gamma, bcoeff, Phi
+
 #TODO: Update alphaEstimate inplace using a Ref type
 # on first access.
 struct ProblemData{T}
@@ -147,10 +150,6 @@ function u(x, t, d::ProblemData{T}) where {T}
     # Fallthrough definition
     return first(promote(zero(x), zero(t), zero(T)))
 end
-
-
-# Note: Minimal interface is exported below.
-export g, p, f, Gamma, bcoeff, Phi
 
 """
     g(t,d)
