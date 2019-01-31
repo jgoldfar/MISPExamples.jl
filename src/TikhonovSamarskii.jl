@@ -1,6 +1,9 @@
 module TikhonovSamarskii
-if VERSION >= v"0.6-"
+@static if VERSION >= v"0.6-"
     import SpecialFunctions: erf
+end
+@static if VERSION < v"0.7-"
+    using Compat: range
 end
 
 import Base.FastMath: sqrt_fast
