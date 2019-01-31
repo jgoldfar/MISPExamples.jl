@@ -45,7 +45,68 @@ const TSE = MISPExamples.TikhonovSamarskii
         nuv = @inferred TSE.nu(1.0, t1WithAlpha)
         @test nuv >= 0
 
-        # TODO: add test that u1 and u2 are continuous by checking values at xi(t)
+
+        smallAccum = 0.0
+        for t in TSE.tGrid(5)[2:end]
+            xit = TSE.xi(t, t1WithAlpha)
+            smallAccum += TSE.u1(xit, t, t1WithAlpha) - TSE.u2(xit, t, t1WithAlpha)
+        end
+        @test smallAccum < 1e-6
+    end
+end
+
+# Tests for "Default" Tikhonov & Samarskii Example
+const TSD = MISPExamples.TikhonovSamarskiiDefault
+@testset "TikhonovSamarskiiDefault" begin
+    # Test that parameter functions are all inferrable.
+    xi1 = @inferred TSD.xi(1.0)
+    @test xi1 > TSD.t1.alphaEstimate # since tShift > 0
+
+    vv = @inferred TSD.v(0, 0.1)
+    vv2 = @inferred TSD.v(TSD.spaceLength, 0.1)
+    @test vv * vv2 < 0 # Change in phase across domain
+
+    gv = @inferred TSD.g(1.0)
+    @test gv >= 0
+
+    pv = @inferred TSD.p(1.0)
+    @test pv >= 0
+
+    nuv = @inferred TSD.nu(1.0)
+    @test nuv >= 0
+
+    PhiLeft = @inferred TSD.Phi(0)
+    PhiRight = @inferred TSD.Phi(TSD.spaceLength)
+    @test PhiLeft * PhiRight < 0 # Change in phase across domain initially
+
+    GammaV = @inferred TSD.Gamma(0)
+    @test GammaV > 0
+
+    bv = @inferred TSD.b(vv)
+    bv2 = @inferred TSD.b(vv2)
+    @test bv * bv2 < 0 # Change in phase across domain results in change in sign for b
+
+    fv = @inferred TSD.f(0, 0)
+    @test isapprox(fv, 0) # This example only
+
+    tgv = TSD.tGrid(6)
+    @test length(tgv) == 6
+    @test first(tgv) == 0
+    @test isapprox(last(tgv), TSD.finalMoment)
+
+    xgv = TSD.xGrid(7)
+    @test length(xgv) == 7
+    @test first(xgv) == 0
+    @test isapprox(last(xgv), TSD.spaceLength)
+end
+
+@static if VERSION >= v"0.7-"
+    @testset "exampleFiles" begin
+        expectedNames = [:bcoeff, :f, :Phi, :g, :p, :Gamma]
+        @testset "Example module $M satisfies correct interface" for M in filter(!isequal(:MISPExamples), names(MISPExamples))
+            MNames = names(getproperty(MISPExamples, M))
+            @test all(n in MNames for n in expectedNames)
+        end
     end
 end
 
