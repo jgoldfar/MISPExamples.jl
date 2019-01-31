@@ -1,7 +1,9 @@
 # README
 
-[Bitbucket Pipeline Status](https://img.shields.io/bitbucket/pipelines/jgoldfar/mispexamples.jl.svg?style=flat)
+![Bitbucket Pipeline Status](https://img.shields.io/bitbucket/pipelines/jgoldfar/mispexamples.jl.svg?style=flat)
 [![Travis Build Status](https://travis-ci.org/jgoldfar/MISPExamples.jl.svg?branch=master)](https://travis-ci.org/jgoldfar/MISPExamples.jl)
+[![codecov](https://codecov.io/gh/jgoldfar/MISPExamples.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/jgoldfar/MISPExamples.jl)
+[![Coverage Status](https://coveralls.io/repos/github/jgoldfar/MISPExamples.jl/badge.svg?branch=master)](https://coveralls.io/github/jgoldfar/MISPExamples.jl?branch=master)
 
 `MISPExamples` defines a "general" version of the self-similar solution to the Stefan problem from Tikhonov & Samarskii (with all parameters free to choose) as well as a "default" version with pre-set parameters.
 
