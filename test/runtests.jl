@@ -7,14 +7,6 @@ else
     import Compat: @info
 end
 
-@testset "exampleFiles" begin
-    expectedNames = [:bcoeff, :f, :Phi, :g, :p, :Gamma]
-    @testset "Example module $M satisfies correct interface" for M in filter(!isequal(:MISPExamples), names(MISPExamples))
-        MNames = names(getproperty(MISPExamples, M))
-        @test all(n in MNames for n in expectedNames)
-    end
-end
-
 const TSE = MISPExamples.TikhonovSamarskii
 @testset "TikhonovSamarskii Example" begin
     # Simple test that _bisect works as expected.
@@ -55,4 +47,16 @@ const TSE = MISPExamples.TikhonovSamarskii
 
         # TODO: add test that u1 and u2 are continuous by checking values at xi(t)
     end
+end
+
+@static if VERSION >= v"0.7-"
+
+@testset "exampleFiles" begin
+    expectedNames = [:bcoeff, :f, :Phi, :g, :p, :Gamma]
+    @testset "Example module $M satisfies correct interface" for M in filter(!isequal(:MISPExamples), names(MISPExamples))
+        MNames = names(getproperty(MISPExamples, M))
+        @test all(n in MNames for n in expectedNames)
+    end
+end
+
 end
